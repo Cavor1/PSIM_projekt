@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.image {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+body {
+    background-color: lightgrey; /* Gray background */
+}

@@ -1,9 +1,15 @@
 import os
+from time import sleep
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
+from .model import inference
 
 def main(request):
+
+    prediction = {}
+    current_file = None
+
     if request.method == 'POST':
         # Handle file uploads
         if request.FILES.get('image'):
@@ -15,8 +21,8 @@ def main(request):
         # Handle predictions
         selected_file = request.POST.get('selected_file')
         if selected_file:
-            print(f"Selected file for prediction: {selected_file}")
-            # Add your model prediction logic here
+            current_file = selected_file
+            prediction = inference(os.path.join(settings.MEDIA_ROOT, os.path.basename(selected_file)))
 
     # File browsing
     file_urls = []
@@ -28,4 +34,4 @@ def main(request):
                 'url': settings.MEDIA_URL + filename,
             })
 
-    return render(request, 'main.html', {'files': file_urls})
+    return render(request, 'main.html', {'files': file_urls, 'prediction': prediction, 'current_file':current_file})

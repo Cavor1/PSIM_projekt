@@ -19,6 +19,10 @@
             }
         }
     </script>
+
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'my_app/css/styles.css' %}">
 </head>
 <body>
 
@@ -54,5 +58,27 @@
         <br><br>
         <button type="submit">Upload</button>
     </form>
+
+
+    <h1>Prediction Results</h1>
+    <div class="container">
+
+        <div class="image">
+            <img src="{{ MEDIA_URL }}{{ current_file }}" alt="Selected Image" style="max-width: 100%; height: auto;">
+        </div>
+
+
+        <div>
+        {% if prediction %}
+            <ul>
+                {% for class_name, probability in prediction.items %}
+                    <li><strong>{{ class_name }}:</strong> {{ probability|floatformat:2 }}%</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No prediction available. Please select a file and submit.</p>
+        {% endif %}
+        </div>
+    </div>
 </body>
 </html>
